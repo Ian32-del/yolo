@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: ./client
+    ports:
+      - "80:80"
+    container_name: yolo-frontend
+
+  backend:
+    build: 
+      context: ./backend
+    ports:
+      - "5001:5001"
+    container_name: yolo
+
+  
