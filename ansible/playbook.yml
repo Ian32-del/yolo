@@ -1,0 +1,23 @@
+# ansible/playbook.yml
+---
+- hosts: all
+  become: yes
+  vars_files:
+    - group_vars/all.yml
+
+  roles:
+    - backend
+    - frontend
+
+  tasks:
+    - name: Ensure all roles are executed
+      block:
+        - name: Backend setup
+          include_role:
+            name: backend
+          tags: backend
+
+        - name: Frontend setup
+          include_role:
+            name: frontend
+          tags: frontend
