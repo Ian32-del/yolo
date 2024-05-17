@@ -1,2 +1,35 @@
 ---
-# tasks file for frontend
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Install Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+    append: yes
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Copy Docker Compose file
+  copy:
+    src: /vagrant/docker-compose.yml
+    dest: /home/vagrant/docker-compose.yml
+
+- name: Start frontend Docker service
+  command: docker-compose up -d frontend
+  args:
+    chdir: /home/vagrant
+  tags: frontend
