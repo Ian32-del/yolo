@@ -5,11 +5,20 @@
     state: present
     update_cache: yes
 
+- name: Set Docker Compose download URL
+  set_fact:
+    docker_compose_url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+
 - name: Install Docker Compose
   get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
+    url: "{{ docker_compose_url }}"
     dest: /usr/local/bin/docker-compose
     mode: '0755'
+    timeout: 300
+  register: download_result
+  until: download_result is succeeded
+  retries: 5
+  delay: 30
 
 - name: Add vagrant user to docker group
   user:
@@ -23,13 +32,48 @@
     state: started
     enabled: yes
 
+- name: Verify docker-compose.yml exists on host
+  stat:
+    path: /home/ian/Development2/code/Yolo/yolo/docker-compose.yml
+  register: compose_file_check
+  delegate_to: localhost
+  become: yes
+  vars:
+    ansible_become_password: "Odhiambo18"
+
+- name: Fail if docker-compose.yml is not found
+  fail:
+    msg: "docker-compose.yml not found on host system at /home/ian/Development2/code/Yolo/yolo/docker-compose.yml"
+  when: not compose_file_check.stat.exists
+
 - name: Copy Docker Compose file
   copy:
-    src: /vagrant/docker-compose.yml
+    src: /home/ian/Development2/code/Yolo/yolo/docker-compose.yml
     dest: /home/vagrant/docker-compose.yml
+    remote_src: no
+
+- name: Verify /vagrant directory exists on guest
+  stat:
+    path: /vagrant
+  register: vagrant_dir_check
+
+- name: Fail if /vagrant directory does not exist on guest
+  fail:
+    msg: "/vagrant directory does not exist on guest system"
+  when: not vagrant_dir_check.stat.exists
+
+- name: Verify client directory exists in /vagrant
+  stat:
+    path: /vagrant/client
+  register: client_dir_check
+
+- name: Fail if client directory does not exist in /vagrant
+  fail:
+    msg: "/vagrant/client directory does not exist. Please check synced folders."
+  when: not client_dir_check.stat.exists
 
 - name: Start frontend Docker service
   command: docker-compose up -d frontend
   args:
-    chdir: /home/vagrant
+    chdir: /vagrant
   tags: frontend

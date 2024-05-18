@@ -5,9 +5,13 @@
     state: present
     update_cache: yes
 
+- name: Determine Docker Compose download URL
+  set_fact:
+    docker_compose_url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ docker_compose_os }}-{{ docker_compose_arch }}"
+
 - name: Install Docker Compose
   get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
+    url: "{{ docker_compose_url }}"
     dest: /usr/local/bin/docker-compose
     mode: '0755'
 
@@ -25,11 +29,13 @@
 
 - name: Copy Docker Compose file
   copy:
-    src: /vagrant/docker-compose.yml
+    src: /home/ian/Development2/code/Yolo/yolo/docker-compose.yml
     dest: /home/vagrant/docker-compose.yml
+    remote_src: no
+
 
 - name: Start backend Docker service
   command: docker-compose up -d backend
   args:
-    chdir: /home/vagrant
+    chdir: /vagrant
   tags: backend

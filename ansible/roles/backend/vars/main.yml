@@ -1,3 +1,6 @@
 ---
 # vars file for backend
 backend_port: 5001
+docker_compose_version: "1.29.2"
+docker_compose_os: "Linux"
+docker_compose_arch: "x86_64"
