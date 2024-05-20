@@ -1,0 +1,26 @@
+---
+- name: Frontend setup
+  hosts: frontend
+  become: yes
+  tasks:
+    - name: Clone the frontend repository
+      git:
+        repo: 'https://github.com/Ian32-del/yolo'
+        dest: /home/vagrant/frontend
+        version: main
+
+    - name: Verify docker-compose.yml exists in repository
+      stat:
+        path: /home/vagrant/frontend/docker-compose.yml
+      register: compose_file_check
+
+    - name: Fail if docker-compose.yml is not found in repository
+      fail:
+        msg: "docker-compose.yml not found in frontend repository."
+      when: not compose_file_check.stat.exists
+
+    - name: Start frontend Docker service
+      command: docker-compose up -d frontend
+      args:
+        chdir: /home/vagrant/frontend
+      tags: frontend

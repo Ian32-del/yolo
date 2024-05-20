@@ -1,0 +1,26 @@
+---
+- name: Backend setup
+  hosts: backend
+  become: yes
+  tasks:
+    - name: Clone the backend repository
+      git:
+        repo: 'https://github.com/Ian32-del/yolo'
+        dest: /home/vagrant/backend
+        version: main
+
+    - name: Verify docker-compose.yml exists in repository
+      stat:
+        path: /home/vagrant/backend/docker-compose.yml
+      register: compose_file_check
+
+    - name: Fail if docker-compose.yml is not found in repository
+      fail:
+        msg: "docker-compose.yml not found in backend repository."
+      when: not compose_file_check.stat.exists
+
+    - name: Start backend Docker service
+      command: docker-compose up -d backend
+      args:
+        chdir: /home/vagrant/backend
+      tags: backend

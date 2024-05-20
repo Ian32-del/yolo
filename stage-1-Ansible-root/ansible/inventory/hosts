@@ -1,0 +1,8 @@
+[frontend]
+frontend_host ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_become=yes ansible_become_password=Odhiambo18 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[backend]
+backend_host ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_become=yes ansible_become_password=Odhiambo18 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[local]
+localhost ansible_connection=local ansible_become=yes ansible_become_password=Odhiambo18

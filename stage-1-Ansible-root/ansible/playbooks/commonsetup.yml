@@ -1,0 +1,37 @@
+---
+- name: Common setup
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Set Docker Compose download URL
+      set_fact:
+        docker_compose_url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+
+    - name: Install Docker Compose
+      get_url:
+        url: "{{ docker_compose_url }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+        timeout: 300
+      register: download_result
+      until: download_result is succeeded
+      retries: 5
+      delay: 30
+
+    - name: Add vagrant user to docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
