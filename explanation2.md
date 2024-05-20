@@ -1,10 +1,12 @@
-# Project Title
+# Project Explanation
 
 ## Overview
 
-This project aims to provision and configure an environment using both Terraform and Ansible. The primary goal is to set up a similar infrastructure stack as created in stage 1, using Vagrant for server provisioning and Docker for containerization. The project is organized into multiple stages for better management and scalability.
+This project aims to provision and configure an environment using both Terraform and Ansible. The primary goal is to set up a similar infrastructure stack as was created in stage 1, using Vagrant for server provisioning and Docker for containerization. The project is divided into multiple stages for better organization and scalability.
 
 ## Project Structure
+
+The directory structure for the project is as follows:
 
 your-project-root/
 ├── stage-1-Ansible-root/
@@ -23,17 +25,14 @@ your-project-root/
 │ ├── ...
 ├── other-project-files/
 
-markdown
+perl
 Copy code
 
-## Prerequisites
-
-- [Vagrant](https://www.vagrantup.com/)
-- [VirtualBox](https://www.virtualbox.org/)
-- [Git](https://git-scm.com/)
-- [Ansible](https://www.ansible.com/)
-
 ## Setup Instructions
+
+### Prerequisites
+
+- Ensure you have `Vagrant`, `VirtualBox`, `Git`, and `Ansible` installed on your local machine.
 
 ### Step 1: Clone the Repository
 
@@ -90,7 +89,4 @@ If you encounter issues with the apt package manager, make sure the repositories
 Verify the structure and paths within the Ansible playbooks to ensure they match your project’s file system.
 Conclusion
 This project demonstrates how to effectively use Vagrant for provisioning, and Ansible for configuration management and deployment, to create a consistent and repeatable infrastructure setup. By following the steps outlined above, you should be able to set up a backend and frontend environment using Docker containers, managed through Ansible.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
 
