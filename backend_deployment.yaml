@@ -21,3 +21,14 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8080
+        env:
+        - name: DATABASE_HOST
+          value: postgres
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_NAME
+          value: mydatabase
+        - name: DATABASE_USER
+          value: myuser
+        - name: DATABASE_PASSWORD
+          value: mypassword
