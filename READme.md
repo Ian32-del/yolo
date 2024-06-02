@@ -77,8 +77,8 @@ Find the external IP of the frontend service:
 sh
 Copy code
 kubectl get services
-Access the application at: http://<external-ip>
+Access the application at: http://localhost:8080/
 
 Live URL
-Access the application at: http://<external-ip>
+Access the application at: http://localhost:8080/
 

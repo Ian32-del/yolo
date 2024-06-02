@@ -28,7 +28,7 @@ Our Git workflow involved:
 ## 5. Successful Running of the Applications
 
 The application is successfully running and can be accessed at:
-- [Live Application URL](http://localhost 80:80)
+- [Live Application URL](http://localhost:8080/)
 
 ### Debugging Measures
 - **Logs:** Checked using `kubectl logs` to identify and resolve issues.
